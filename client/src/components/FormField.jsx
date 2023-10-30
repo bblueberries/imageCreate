@@ -19,7 +19,7 @@ const FormField = ({
         >
           {labelName}
         </label>
-        {isSurpriseMe && (
+        {isSurpriseMe ? (
           <button
             type="button"
             onClick={handleSurpriseMe}
@@ -27,7 +27,7 @@ const FormField = ({
           >
             Surprise me
           </button>
-        )}
+        ) : null}
       </div>
       <input
         type={type}

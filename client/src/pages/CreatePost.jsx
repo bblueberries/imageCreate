@@ -13,7 +13,9 @@ const CreatePost = () => {
 
   const [generatingImg, setGeneratingImg] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [generateImage, setGenerateImage] = useState(false);
+
+  const generateImage = () => {};
+
   const handleSubmit = () => {};
 
   const handleChange = (e) => {
@@ -52,7 +54,7 @@ const CreatePost = () => {
             placeholder="A plush toy robot sitting against the wall"
             value={form.prompt}
             handleChange={handleChange}
-            isSurpriseMe
+            isSurpriseMe={true}
             handleSurpriseMe={handleSurpriseMe}
           />
 
