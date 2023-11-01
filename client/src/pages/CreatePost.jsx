@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { preview } from "../assets";
 import { getRandomPrompt } from "../utils";
 import { FormField, Loader } from "../components";
+
+import { HfInference } from "@huggingface/inference";
+
 const CreatePost = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
@@ -11,10 +14,34 @@ const CreatePost = () => {
     photo: "",
   });
 
-  const [generatingImg, setGeneratingImg] = useState(false);
+  const [generatingImg, setGeneratingImg] = useState();
   const [loading, setLoading] = useState(false);
 
-  const generateImage = () => {};
+  const generateImage = async () => {
+    if (form.prompt) {
+      setGeneratingImg(true);
+      try {
+        const hf = new HfInference("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");
+        const res = await hf.textToImage({
+          inputs: form.prompt,
+          model: "stabilityai/stable-diffusion-2",
+          parameters: {
+            negative_prompt: "blurry",
+          },
+        });
+        // console.log(res);
+        const url = URL.createObjectURL(res);
+        setForm({ ...form, photo: url });
+        // console.log(form.photo);
+      } catch (error) {
+        alert(error);
+      } finally {
+        setGeneratingImg(false);
+      }
+    } else {
+      alert("Please enter a prompt");
+    }
+  };
 
   const handleSubmit = () => {};
 
@@ -83,6 +110,7 @@ const CreatePost = () => {
 
         <div className="mt-5 flex gap-5 ">
           <button
+            type="button"
             onClick={generateImage}
             className="text-white bg-green-700 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
           >

@@ -19,8 +19,9 @@ router.route("/").get((req, res) => {
 router.route("/").post(async (req, res) => {
   try {
     const { prompt } = req.body;
-    const aiResponse = await openai.createImage({
-      prompt,
+
+    const aiResponse = await openai.images.generate({
+      prompt: "a white cat",
       n: 1,
       size: "1024x1024",
       response_format: "b64_json",
@@ -30,8 +31,8 @@ router.route("/").post(async (req, res) => {
 
     res.status(200).json({ photo: image });
   } catch (error) {
-    console.log(error);
-    res.status(500).send(error?.response.data.error.message);
+    console.error("Error creating image:", error.message);
+    res.status(500).json({ error: "An error occured" });
   }
 });
 export default router;
