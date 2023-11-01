@@ -8,11 +8,11 @@ dotenv.config();
 
 const router = express.Router();
 
-// cloudinary.config({
-//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-//   api_key: process.env.CLOUDINARY_API_KEY,
-//   api_secret: process.env.CLOUDINARY_API_SECRET,
-// });
+cloudinary.config({
+  cloud_name: "dbs5aijk3",
+  api_key: "358713798329685",
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 //GET ALL POSTS
 router.route("/").get(async (req, res) => {
@@ -29,15 +29,28 @@ router.route("/").get(async (req, res) => {
 router.route("/").post(async (req, res) => {
   try {
     const { name, photo, prompt } = req.body;
-    // const photoURL = await cloudinary.uploader.upload(photo);
 
-    const newPost = await Post.create({
-      name,
-      prompt,
+    cloudinary.uploader.upload(
       photo,
-    });
+      { public_id: prompt },
+      async function (error, result) {
+        if (error) {
+          console.error("Error uploading to Cloudinary:", error);
+        } else {
+          console.log("Uploaded to Cloudinary:", result);
+          const publicURL = result.secure_url; // Get the public URL
+          console.log("Public URL:");
 
-    res.status(201).json({ success: true, data: newPost });
+          const newPost = await Post.create({
+            name,
+            prompt,
+            photo: publicURL,
+          });
+
+          res.status(201).json({ success: true, data: newPost });
+        }
+      }
+    );
   } catch (error) {
     res.status(500).json({ success: false, message: error });
   }

@@ -17,6 +17,14 @@ const CreatePost = () => {
   const [generatingImg, setGeneratingImg] = useState();
   const [loading, setLoading] = useState(false);
 
+  function blobToBase64(blob) {
+    return new Promise((resolve, _) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.readAsDataURL(blob);
+    });
+  }
+
   const generateImage = async () => {
     if (form.prompt) {
       setGeneratingImg(true);
@@ -29,10 +37,13 @@ const CreatePost = () => {
             negative_prompt: "blurry",
           },
         });
-        // console.log(res);
-        const url = URL.createObjectURL(res);
-        setForm({ ...form, photo: url });
-        // console.log(form.photo);
+
+        const base64 = await blobToBase64(res);
+
+        // const imageUrl = URL.createObjectURL(base64);
+        // console.log(imageUrl);
+        console.log(base64);
+        setForm({ ...form, photo: base64 });
       } catch (error) {
         alert(error);
       } finally {
