@@ -9,8 +9,8 @@ dotenv.config();
 const router = express.Router();
 
 cloudinary.config({
-  cloud_name: "dbs5aijk3",
-  api_key: "358713798329685",
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
@@ -39,7 +39,6 @@ router.route("/").post(async (req, res) => {
         } else {
           console.log("Uploaded to Cloudinary:", result);
           const publicURL = result.secure_url; // Get the public URL
-          console.log("Public URL:");
 
           const newPost = await Post.create({
             name,
