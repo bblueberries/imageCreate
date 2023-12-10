@@ -1,5 +1,6 @@
 # Image Create
-this project is a web which show the images gallery that create using stable diffusion AI (api from huggingface) users can create the image by fill a prompt an their name in the form of Create image Page
+this project is a web which show the images gallery that create using stable diffusion AI (api from huggingface) users can create the image by fill a prompt an their name in the form of Create image Page<br/>
+tool: Javascript, React, ViteJS, HuggingFace inference API, MongoDB, Express, NodeJS, Mongoose, Cloudinary, Tailwind 
 <table>
   <tr >
     <td> <h3>Home Page</h3>
